@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import multer from 'multer';
 
+
 import { CreateCategoryController } from './controllers/category/CreateCategoryController';
 import { ListCategoriesController } from './controllers/category/ListCategoriesController';
 import { CreateProductController } from './controllers/product/CreateProductController';
@@ -10,6 +11,7 @@ import { DetailUserController } from './controllers/user/DetailUserController';
 import { isAuthenticated } from './middlewares/isAuthenticated';
 
 import uploadConfig from './config/multer';
+import { ListProductsByCategoryController } from './controllers/product/ListProductsByCategoryController';
 
 
 
@@ -32,6 +34,6 @@ router.get("/category/listall", isAuthenticated, new ListCategoriesController().
 // Routes - Products
 
 router.post("/product/create", isAuthenticated, upload.single('file'), new CreateProductController().handle);
-
+router.get("/category/products", isAuthenticated, new ListProductsByCategoryController().handle);
 
 export { router };
