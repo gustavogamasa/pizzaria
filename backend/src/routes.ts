@@ -17,6 +17,9 @@ import { RemoveOrderController } from './controllers/order/RemoveOrderController
 import { AddItemToOrderController } from './controllers/order/AddItemToOrderController';
 import { RemoveItemFromOrderController } from './controllers/order/RemoveItemFromOrderController';
 import { SendOrderController } from './controllers/order/SendOrderController';
+import { ListOrdersController } from './controllers/order/ListOrdersController';
+import { DetailOrderController } from './controllers/order/DetailOrderController';
+import { FinishOrderController } from './controllers/order/FinishOrderController';
 
 
 
@@ -48,7 +51,9 @@ router.delete("/order/delete", isAuthenticated, new RemoveOrderController().hand
 router.post("/order/add-item", isAuthenticated, new AddItemToOrderController().handle);
 router.delete("/order/remove-item", isAuthenticated, new RemoveItemFromOrderController().handle);
 router.put("/order/send", isAuthenticated, new SendOrderController().handle);
-
+router.get("/order/list-pending", isAuthenticated, new ListOrdersController().handle);
+router.get("/order/detail", isAuthenticated, new DetailOrderController().handle);
+router.put("/order/finish", isAuthenticated, new FinishOrderController().handle);
 
 
 export { router };

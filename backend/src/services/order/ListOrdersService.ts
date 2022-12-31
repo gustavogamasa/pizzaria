@@ -1,0 +1,21 @@
+import prismaClient from "../../prisma"
+
+
+class ListOrdersService {
+
+    async execute(){
+
+        const listaOrders = await prismaClient.order.findMany({
+            where:{
+                draft: false,
+                status: false
+            }, orderBy: {
+                created_at: 'desc'
+            }
+        });
+        return listaOrders;
+    }
+
+}
+
+export { ListOrdersService }
