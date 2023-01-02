@@ -3,6 +3,7 @@ import styles from '../styles/home.module.scss'
 import logoImg from '../../public/pizza_svg_logo.svg'
 import Image from "next/image";
 import { Input } from "../components/ui/Input";
+import { Button } from "../components/ui/Button";
 
 
 
@@ -31,6 +32,13 @@ export default function Home() {
               placeholder="Senha"
               type="password"
             />
+            
+            <Button 
+            type="submit"
+            loading={true}
+            >
+              Acessar
+            </Button>
           </form>
 
 
