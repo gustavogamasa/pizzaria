@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Input } from "../components/ui/Input";
 import { Button } from "../components/ui/Button";
 import Link from "next/link";
-import { FormEvent, useContext } from "react";
+import { FormEvent, useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 
 
@@ -14,16 +14,28 @@ export default function Home() {
 
   const { signIn } = useContext(AuthContext);
 
-  async function handleSubmit(event: FormEvent){
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
-    let testData = {
-      email: "email@email.com",
-      password: "123"
+    if (email === '' || password === '') {
+      alert("Preencha os campos corretamente");
+      return;
     }
 
-    signIn(testData);
+    setLoading(true);
+    
+    let testData = {
+      email,
+      password
+    }
 
+   await signIn(testData);
+
+    setLoading(false);
   }
 
 
@@ -45,17 +57,21 @@ export default function Home() {
             <Input
               placeholder="Email"
               type="text"
+              value={email}
+              onChange={(e) => { setEmail(e.target.value) }}
             />
 
 
             <Input
               placeholder="Senha"
               type="password"
+              value={password}
+              onChange={(e) => { setPassword(e.target.value) }}
             />
 
             <Button
               type="submit"
-              loading={false}
+              loading={loading}
             >
               Acessar
             </Button>
