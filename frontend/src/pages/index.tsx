@@ -4,10 +4,30 @@ import logoImg from '../../public/pizza_svg_logo.svg'
 import Image from "next/image";
 import { Input } from "../components/ui/Input";
 import { Button } from "../components/ui/Button";
+import Link from "next/link";
+import { FormEvent, useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 
 
 
 export default function Home() {
+
+  const { signIn } = useContext(AuthContext);
+
+  async function handleSubmit(event: FormEvent){
+    event.preventDefault();
+
+    let testData = {
+      email: "email@email.com",
+      password: "123"
+    }
+
+    signIn(testData);
+
+  }
+
+
+
   return (
 
     <>
@@ -18,10 +38,10 @@ export default function Home() {
       </Head>
 
       <div className={styles.containerCenter}>
-        <Image src={logoImg} alt="logo" />
+        <Image className={styles.logo} src={logoImg} alt="logo" />
 
         <div className={styles.login}>
-          <form>
+          <form onSubmit={handleSubmit}>
             <Input
               placeholder="Email"
               type="text"
@@ -32,15 +52,18 @@ export default function Home() {
               placeholder="Senha"
               type="password"
             />
-            
-            <Button 
-            type="submit"
-            loading={true}
+
+            <Button
+              type="submit"
+              loading={false}
             >
               Acessar
             </Button>
           </form>
 
+          <Link legacyBehavior href="/signup">
+            <a className={styles.text}>Cadastre-se</a>
+          </Link>
 
         </div>
 
