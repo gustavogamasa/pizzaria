@@ -1,6 +1,6 @@
 import Router from "next/router";
-import { destroyCookie, setCookie } from "nookies";
-import { createContext, ReactNode, useContext, useState } from "react";
+import { destroyCookie, parseCookies, setCookie } from "nookies";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { api } from "../services/apiClient";
 
@@ -47,6 +47,22 @@ export async function signOut() {
 
 
 export function AuthProvider({ children }: AuthProviderProps) {
+
+    useEffect(()=>{
+        
+        const { '@pizzaAuth.token': token} = parseCookies();
+        if (token) {
+            api.get('/me').then(response => {
+                const {id, name, email} = response.data;
+
+                setUser({
+                    id, name, email
+                })
+            }).catch(()=>{signOut();})
+        }
+        
+
+    },[]);
 
     const [user, setUser] = useState<UserProps>();
     const isAuthenticated = !!user;
