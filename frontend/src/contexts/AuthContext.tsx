@@ -1,6 +1,7 @@
 import Router from "next/router";
 import { destroyCookie, setCookie } from "nookies";
 import { createContext, ReactNode, useContext, useState } from "react";
+import { toast } from "react-toastify";
 import { api } from "../services/apiClient";
 
 type AuthContextData = {
@@ -8,6 +9,7 @@ type AuthContextData = {
     isAuthenticated: boolean;
     signIn: (credentials: SignInProps) => Promise<void>;
     signOut: () => void;
+    signUp: (credentials: SignUpProps) => Promise<void>;
 }
 
 type UserProps = {
@@ -21,12 +23,28 @@ type SignInProps = {
     password: string;
 }
 
+type SignUpProps = {
+    email: string;
+    password: string;
+    name: string;
+}
+
 type AuthProviderProps = {
     children: ReactNode;
 }
 
 
 export const AuthContext = createContext({} as AuthContextData);
+
+export async function signOut() {
+    try {
+        destroyCookie(undefined, '@pizzaAuth.Token');
+        Router.push('/');
+    } catch (e) {
+        console.log('Logout failed')
+    }
+}
+
 
 export function AuthProvider({ children }: AuthProviderProps) {
 
@@ -54,26 +72,38 @@ export function AuthProvider({ children }: AuthProviderProps) {
             //Route to dashboard
 
             Router.push('/dashboard');
+            toast.success("Bem vindo, "+name+"!");
 
         } catch (error) {
-            console.log("Login error", error);
+            toast.error("Erro: ", error)
         }
 
     }
+    
+    async function signUp({name, email, password}:SignUpProps){
+        try {
+            const response = await api.post('/users', {
+                name,
+                email,
+                password
+            });
+
+            toast.success("Usuário criado com sucesso. Por favor, faça o login");
+
+            Router.push('/');
+
+        } catch (error) {
+            toast.warn("Erro ao criar usuário "+error);
+            console.error("Sign up failed", error)
+        }
+
+    }   
 
 
     return (
-        <AuthContext.Provider value={{ user, isAuthenticated, signIn, signOut }}>
+        <AuthContext.Provider value={{ user, isAuthenticated, signIn, signOut, signUp}}>
             {children}
         </AuthContext.Provider>
     )
 }
 
-export function signOut() {
-    try {
-        destroyCookie(undefined, '@pizzaAuth.Token');
-        Router.push('/');
-    } catch (e) {
-        console.log('Logout failed')
-    }
-}
