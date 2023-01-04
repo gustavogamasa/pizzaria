@@ -3,8 +3,16 @@ import styles from './styles.module.scss';
 import { FiLogOut } from 'react-icons/fi'
 import logoImg from '../../../public/pizza_logo.png'
 import Image from 'next/image';
+import { useContext } from 'react';
+import { AuthContext } from '../../contexts/AuthContext';
 
 export function Header() {
+
+
+    const { user, signOut } = useContext(AuthContext);
+
+
+
     return (
         <header className={styles.headerContainer}>
 
@@ -13,6 +21,14 @@ export function Header() {
                     <Image src={logoImg} alt="logo" height={50} className={styles.logo}>
                     </Image>
                 </Link>
+                
+                <div className={styles.userName}>
+                    Bem vindo,
+                {
+                   " "+user?.name
+                }
+
+                </div>
 
                 <nav className={styles.menuNav}>
 
@@ -24,7 +40,7 @@ export function Header() {
                         Cardápio
                     </Link>
 
-                    <button>
+                    <button onClick={signOut}>
                         <FiLogOut color='#FFF' size={24}>
                         </FiLogOut>
                     </button>
