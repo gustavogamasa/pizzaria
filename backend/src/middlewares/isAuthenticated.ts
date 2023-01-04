@@ -23,7 +23,8 @@ export function isAuthenticated(req: Request, res: Response, next: NextFunction)
 
         // Recover token ID and store it in user_id inside the request
         req.user_id = sub;
-        
+       
+
         return next();
 
 

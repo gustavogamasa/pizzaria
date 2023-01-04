@@ -5,6 +5,7 @@ import logoImg from '../../../public/pizza_logo.png'
 import Image from 'next/image';
 import { useContext } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
+import { FaSpinner } from 'react-icons/fa';
 
 export function Header() {
 
@@ -23,10 +24,8 @@ export function Header() {
                 </Link>
                 
                 <div className={styles.userName}>
-                    Bem vindo,
-                {
-                   " "+user?.name
-                }
+
+                <h3>Bem vindo, {user?.name}</h3>
 
                 </div>
 
