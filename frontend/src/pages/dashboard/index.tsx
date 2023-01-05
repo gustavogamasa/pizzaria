@@ -5,6 +5,7 @@ import styles from './styles.module.scss'
 import { FiRefreshCcw } from 'react-icons/fi'
 import { setupAPIClient } from "../../services/api"
 import { useState } from "react"
+import Modal from 'react-modal'
 
 type OrderProps = {
     id: string;
@@ -18,14 +19,38 @@ interface OrderListProps {
     orders: OrderProps[];
 }
 
+type OrderDetailsProps = {
+    id: string,
+    amount: number,
+    product_id: string
+    product:{
+        id: string,
+        name: string,
+        description: string,
+        price: string,
+        banner: string
+    }
+    order:{
+        id: string,
+        table: string | number,
+        status: boolean,
+        name: string | null;
+    }
+
+}
+
 export default function Dashboard({ orders }: OrderListProps) {
 
     const [orderList, setOrderList] = useState(orders || []);
 
-    function handleOpenOrderDetails(id: string) {
-        console.log("Teste"+id)
+    const [modalItem, setModalItem] = useState<OrderDetailsProps[]>();
+    const [modalVisible, setModalVisible] = useState(false);
 
+    function handleOpenOrderDetails(id: string) {
+        console.log("Teste" + id)
     }
+
+    Modal.setAppElement('#__next');
 
 
     return (
@@ -76,7 +101,7 @@ export const getServerSideProps = canSSRAuth(async (context) => {
 
     const apiClient = setupAPIClient(context);
     const response = await apiClient.get('order/list-pending');
-    console.log(response.data);
+
 
     return {
         props: {
