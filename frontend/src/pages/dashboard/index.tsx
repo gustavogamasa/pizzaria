@@ -4,6 +4,7 @@ import { Header } from '../../components/Header'
 import styles from './styles.module.scss'
 import { FiRefreshCcw } from 'react-icons/fi'
 import { setupAPIClient } from "../../services/api"
+import { useState } from "react"
 
 type OrderProps = {
     id: string;
@@ -14,10 +15,19 @@ type OrderProps = {
 }
 
 interface OrderListProps {
-    orderList: OrderProps[];
+    orders: OrderProps[];
 }
 
-export default function Dashboard({ orderList }: OrderListProps) {
+export default function Dashboard({ orders }: OrderListProps) {
+
+    const [orderList, setOrderList] = useState(orders || []);
+
+    function handleOpenOrderDetails(id: string) {
+        console.log("Teste"+id)
+
+    }
+
+
     return (
         <>
             <Head>
@@ -38,19 +48,23 @@ export default function Dashboard({ orderList }: OrderListProps) {
 
 
                 {
+                    orders.map(item => (
 
+                        <article key={item.id} className={styles.listOrders}>
+
+                            <section key={item.id} className={styles.orderItem}>
+                                <button onClick={() => { handleOpenOrderDetails(item.id) }}>
+                                    <div className={styles.tag}></div>
+                                    <span>Mesa {item.table}</span>
+                                </button>
+                            </section>
+
+                        </article>
+
+                    ))
                 }
 
-                <article className={styles.listOrders}>
 
-                    <section className={styles.orderItem}>
-                        <button>
-                            <div className={styles.tag}></div>
-                            <span>Mesa 30</span>
-                        </button>
-                    </section>
-
-                </article>
 
             </main>
 
@@ -61,12 +75,12 @@ export default function Dashboard({ orderList }: OrderListProps) {
 export const getServerSideProps = canSSRAuth(async (context) => {
 
     const apiClient = setupAPIClient(context);
-    const orderList = await apiClient.get('order/list-pending');
-    console.log(orderList.data);
+    const response = await apiClient.get('order/list-pending');
+    console.log(response.data);
 
     return {
         props: {
-            orderList: orderList.data
+            orders: response.data
         }
     }
 
