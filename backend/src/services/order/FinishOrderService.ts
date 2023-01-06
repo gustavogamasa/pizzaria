@@ -6,17 +6,22 @@ interface SendOrder {
 
 class FinishOrderService {
 
-    async execute({order_id}: SendOrder) {
+    async execute({ order_id }: SendOrder) {
+        
+        console.log("Service, ID:"+order_id);
 
-        const sendOrder = await prismaClient.order.update({
+
+        //PROBLEMA ESTÁ AQUI? Frontend falhando
+        const finishdOrder = await prismaClient.order.update({
             where: {
                 id: order_id
             }, data: {
                 status: true
             }
         });
+
         
-        return {sendOrder};
+        return finishdOrder ;
 
     }
 
