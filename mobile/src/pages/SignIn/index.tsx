@@ -1,8 +1,15 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function SignIn() {
+
+    const [email, setEmail] = useState();
+
+
+
+
+
     return (
         <View style={styles.container}>
 
