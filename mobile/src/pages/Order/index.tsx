@@ -4,6 +4,7 @@ import { ImageBackground, Modal, StyleSheet, Text, TextInput, TouchableOpacity, 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from '@expo/vector-icons'
 import { api } from "../../services/api";
+import ModalPicker from "../../components/ModalPicker";
 
 
 
@@ -14,7 +15,7 @@ type RouteDetailParams = {
     }
 }
 
-type CategoryProps = {
+export type CategoryProps = {
     id: string;
     name: string;
 }
@@ -116,6 +117,12 @@ export default function Order() {
                 visible={modalCategoryVisible}
                 animationType='fade'>
 
+                <ModalPicker
+                handleCloseModal={()=>setModalCategoryVisible(false)}
+                optionsCategoryList={categoryList}
+                selectedItem={()=>{}}
+            
+                />
              
             </Modal>
 
