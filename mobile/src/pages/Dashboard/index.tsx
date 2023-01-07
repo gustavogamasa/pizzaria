@@ -1,16 +1,27 @@
 
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AuthContext } from "../../contexts/AuthContext";
+import { StackParamsList } from "../../routes/app.routes";
 
 
 export default function Dashboard() {
 
+    const navigation = useNavigation<NativeStackNavigationProp<StackParamsList>>();
+
     const [tableNumber, setTableNumber] = useState('');
     
     async function handleSubmitOrder(){
-        
+
+        if(tableNumber === '') {
+            alert('Insira uma mesa');
+            return;}
+
+        navigation.navigate('Order', {number: tableNumber, order_id: 'order_teste' });
+
     }
 
 
