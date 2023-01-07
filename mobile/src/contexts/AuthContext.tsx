@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, ReactNode, useState } from "react";
 
 
 type AuthContextData = {
@@ -13,23 +13,27 @@ type UserProps = {
     token: string;
 }
 
+type AuthProviderProps = {
+    children: ReactNode;
+}
+
 
 export const AuthContext = createContext({} as AuthContextData);
 
-const [user, setUser] = useState<UserProps>({
-    id: '',
-    name: '',
-    email: '',
-    token: ''
-});
+export function AuthProvider({children}:AuthProviderProps){
 
-const isAuthenticated = !!user.name; // se tiver nome, será true
-
-export function AuthProvider(){
+    const [user, setUser] = useState<UserProps>({
+        id: '',
+        name: '',
+        email: '',
+        token: ''
+    });
+    
+    const isAuthenticated = !!user.name; // se tiver nome, será true
 
     return (
-        <AuthContext.Provider value={{}}>
-
+        <AuthContext.Provider value={{user, isAuthenticated}}>
+            {children}
         </AuthContext.Provider>
     )
 

@@ -1,19 +1,24 @@
 
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { AuthContext } from "../../contexts/AuthContext";
 
 export default function SignIn() {
+
+    const { user } = useContext(AuthContext);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
 
-    function handleLogin(){
+    function handleLogin() {
 
-        if (email === '' || password === ''){
+        if (email === '' || password === '') {
             alert("Preencha os campos corretamente");
             return;
         }
+
+
 
 
     }
@@ -32,7 +37,7 @@ export default function SignIn() {
 
                 <TextInput style={styles.input} placeholder={"Senha"}
                     placeholderTextColor='white' secureTextEntry={true}
-                    onChangeText={setPassword} value={password}/>
+                    onChangeText={setPassword} value={password} />
 
                 <TouchableOpacity style={styles.button} onPress={handleLogin}>
                     <Text style={styles.buttonText}>Acessar</Text>
