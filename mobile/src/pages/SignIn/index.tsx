@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Image, StyleSheet, Text, TextInput, View } from "react-native";
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function SignIn() {
     return (
@@ -10,8 +10,10 @@ export default function SignIn() {
 
             <View style={styles.inputContainer}>
                 <TextInput style={styles.input} placeholder={"Email"} placeholderTextColor='white'></TextInput>
-                <TextInput style={styles.input} placeholder={"Senha"} placeholderTextColor='white'></TextInput>
-
+                <TextInput style={styles.input} placeholder={"Senha"} placeholderTextColor='white' secureTextEntry={true}></TextInput>
+                <TouchableOpacity style={styles.button}>
+                    <Text style={styles.buttonText}>Acessar</Text>
+                </TouchableOpacity>
             </View>
 
         </View>
@@ -35,18 +37,33 @@ const styles = StyleSheet.create({
     inputContainer: {
         width: '95%',
         height: 40,
+        alignItems: "center",
         justifyContent: "center",
-        paddingVertical: 32, 
+        paddingVertical: 32,
         paddingHorizontal: 14
 
     },
     input: {
         width: "95%",
         height: 40,
-        backgroundColor: 'white',
+        backgroundColor: '#101026',
         marginBottom: 20,
         borderRadius: 4,
-        paddingHorizontal: 20
-
+        paddingHorizontal: 20,
+        color: 'white'
+    },
+    button: {
+        marginTop: 10,
+        width: '95%',
+        height: 40,
+        backgroundColor: "#3fffa3",
+        alignItems: "center",
+        justifyContent: 'center',
+    },
+    buttonText:{
+        fontWeight: "bold",
+        fontSize: 18,
+        color: "#101026",
+        
     }
 })
