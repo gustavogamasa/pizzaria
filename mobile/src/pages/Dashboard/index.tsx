@@ -6,6 +6,7 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-nativ
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AuthContext } from "../../contexts/AuthContext";
 import { StackParamsList } from "../../routes/app.routes";
+import { api } from "../../services/api";
 
 
 export default function Dashboard() {
@@ -20,7 +21,14 @@ export default function Dashboard() {
             alert('Insira uma mesa');
             return;}
 
-        navigation.navigate('Order', {number: tableNumber, order_id: 'order_teste' });
+        const response = await api.post('order/create', {
+            table: Number(tableNumber)
+        })
+
+        // console.log(response.data)
+
+         navigation.navigate('Order', {number: tableNumber, order_id: response.data.id });
+         setTableNumber('');
 
     }
 
