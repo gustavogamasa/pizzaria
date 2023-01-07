@@ -4,10 +4,19 @@ import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "reac
 
 export default function SignIn() {
 
-    const [email, setEmail] = useState();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
 
+    function handleLogin(){
 
+        if (email === '' || password === ''){
+            alert("Preencha os campos corretamente");
+            return;
+        }
+
+
+    }
 
 
     return (
@@ -16,9 +25,16 @@ export default function SignIn() {
             <Image style={styles.logo} source={require('../../assets/pizza_logo.png')} />
 
             <View style={styles.inputContainer}>
-                <TextInput style={styles.input} placeholder={"Email"} placeholderTextColor='white'></TextInput>
-                <TextInput style={styles.input} placeholder={"Senha"} placeholderTextColor='white' secureTextEntry={true}></TextInput>
-                <TouchableOpacity style={styles.button}>
+
+                <TextInput style={styles.input} placeholder={"Email"}
+                    placeholderTextColor='white' value={email}
+                    onChangeText={setEmail} />
+
+                <TextInput style={styles.input} placeholder={"Senha"}
+                    placeholderTextColor='white' secureTextEntry={true}
+                    onChangeText={setPassword} value={password}/>
+
+                <TouchableOpacity style={styles.button} onPress={handleLogin}>
                     <Text style={styles.buttonText}>Acessar</Text>
                 </TouchableOpacity>
             </View>
@@ -67,10 +83,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: 'center',
     },
-    buttonText:{
+    buttonText: {
         fontWeight: "bold",
         fontSize: 18,
         color: "#101026",
-        
+
     }
 })
