@@ -1,6 +1,6 @@
 import { RouteProp, useRoute } from "@react-navigation/native";
 import React from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from '@expo/vector-icons'
 
@@ -24,24 +24,33 @@ export default function Order() {
             <View style={styles.header}>
                 <Text style={styles.headerText}>Mesa {route.params.number}</Text>
                 <TouchableOpacity>
-                    <Feather name="trash-2" size={28} color='#FF3F5b'/>
+                    <Feather name="trash-2" size={28} color='#FF3F5b' />
                 </TouchableOpacity>
             </View>
 
             <TouchableOpacity style={styles.input}>
-                <Text style={{color: 'white'}}>Categorias</Text>
+                <Text style={{ color: 'white' }}>Categorias</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.input}>
-                <Text style={{color: 'white'}}>Item da categoria</Text>
+                <Text style={{ color: 'white' }}>Item da categoria</Text>
             </TouchableOpacity>
 
             <View style={styles.containerQtd}>
                 <Text style={styles.textQtd}>Quantidade</Text>
                 <TextInput style={styles.inputQtd} placeholder='1'
-                placeholderTextColor={'white'} keyboardType='numeric'>
+                    placeholderTextColor={'white'} keyboardType='numeric'>
                 </TextInput>
+            </View>
 
+            <View style={styles.containerButtons}>
+                <TouchableOpacity style={styles.buttonPlus}>
+                    <Feather name="plus" color={'black'} size={30} />
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.buttonAvancar}>
+                    <Text style={styles.textAvancar}>Avançar</Text>
+                </TouchableOpacity>
             </View>
 
         </SafeAreaView>
@@ -82,12 +91,12 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
 
-    containerQtd:{
+    containerQtd: {
         justifyContent: "space-between",
         flexDirection: "row",
         alignItems: 'center',
     },
-    inputQtd:{
+    inputQtd: {
         width: '60%',
         height: 40,
         backgroundColor: '#101026',
@@ -98,11 +107,45 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontSize: 20
     },
-    textQtd:{
+    textQtd: {
         color: 'white',
         fontSize: 20,
         fontWeight: "bold"
 
+    },
+    containerButtons: {
+        marginTop: 20,
+        height: 40,
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: "space-between",
+        ImageBackground: 'white'
+
+    },
+    textAvancar:{
+        color: 'black',
+        fontSize: 18,
+        fontWeight: "bold"
+    },
+
+    buttonPlus:{
+        height: 40,
+        width: '20%',
+        backgroundColor: '#3fd1ff',
+        borderRadius: 4,
+        alignItems: "center",
+        justifyContent: "center"
+
+
+    },
+    
+    buttonAvancar:{
+        height: 40,
+        width: '75%',
+        backgroundColor: '#3fffa3',
+        borderRadius: 6,
+        alignItems: "center",
+        justifyContent: "center"
     }
 
 });
