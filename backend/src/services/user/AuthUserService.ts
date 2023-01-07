@@ -19,7 +19,9 @@ class AuthUserService {
             }
         })
 
-        if (!user) { throw new Error("Incorrect user or password") }
+        if (!user) {
+            throw new Error("Incorrect user or password");
+        }
 
         // Check if password is correct
 
@@ -40,13 +42,15 @@ class AuthUserService {
             }
         )
 
+        console.log("Logged in: " + user.name + " ID: " + user.id);
+
         return {
             id: user.id,
             name: user.name,
             email: user.email,
             token: token
         }
-        
+
     }
 
 }

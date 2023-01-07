@@ -1,8 +1,10 @@
-import { View } from "react-native";
+import { Text, View } from "react-native";
 
 
 export default function Dashboard(){
     return(
-        <View>Dashboard</View>
+        <View>
+            <Text>Dashboard</Text>
+        </View>
     )
 }

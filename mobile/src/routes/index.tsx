@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { ActivityIndicator, View } from "react-native";
+import { AuthContext } from "../contexts/AuthContext";
 import AppRoutes from "./app.routes";
 import AuthRoutes from "./auth.routes";
 
 
 function Routes() {
 
-    const isAuthenticated = false;
+    const { isAuthenticated } = useContext(AuthContext);
+
     const loading = false;
 
     if (loading) {
@@ -18,7 +20,7 @@ function Routes() {
                 backgroundColor: '#1D1D2E'
             }}>
 
-            <ActivityIndicator size={200} color="white"/>
+                <ActivityIndicator size={200} color="white" />
 
             </View>
         )
