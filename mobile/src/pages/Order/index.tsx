@@ -84,10 +84,6 @@ export default function Order() {
 
     }, [categorySelected])
 
-
-
-
-
     async function handleCloseOrder() {
 
         try {
@@ -102,9 +98,7 @@ export default function Order() {
         } catch (error) {
             alert('Erro ao cancelar pedido: ' + error)
         }
-
     }
-
 
     function handleChangeCategory(item: CategoryProps) {
         setCategorySelected(item);
@@ -145,19 +139,13 @@ export default function Order() {
                     item_id: item_id
                 }
             })
-      
         // update item list
-
         let removeItems = orderItems.filter( item => {
             return (item.id !== item_id)
         })
 
         setOrderItems(removeItems);
-
     }
-
-
-
     return (
         <SafeAreaView style={styles.container}>
 
