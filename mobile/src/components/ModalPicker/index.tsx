@@ -5,14 +5,14 @@ import { CategoryProps } from "../../pages/Order";
 
 
 interface ModalPickerProps {
-    optionsCategoryList: CategoryProps[];
+    optionsList: CategoryProps[];
     handleCloseModal: () => void;
     selectedItem: (item: CategoryProps) => void;
 }
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 
-export default function ModalPicker({ handleCloseModal, optionsCategoryList, selectedItem }: ModalPickerProps) {
+export default function ModalPicker({ handleCloseModal, optionsList, selectedItem }: ModalPickerProps) {
 
     function onPressItem(item: CategoryProps) {
         selectedItem(item);
@@ -20,7 +20,7 @@ export default function ModalPicker({ handleCloseModal, optionsCategoryList, sel
     }
 
 
-    const options = optionsCategoryList.map((item, index) => (
+    const options = optionsList.map((item, index) => (
         <TouchableOpacity key={index} style={styles.option} onPress={() => { onPressItem(item) }}>
             <Text style={styles.item}>
                 {item?.name}
