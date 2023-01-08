@@ -129,6 +129,10 @@ export default function Order() {
         setOrderItems(oldArray => [...oldArray, data]);
     }
 
+    async function handleDeleteItem(item_id: string){
+
+    }
+
 
 
     return (
@@ -187,7 +191,7 @@ export default function Order() {
                 style={{ flex: 1, marginTop: 24 }}
                 data={orderItems}
                 keyExtractor={(item) => item.id}
-                renderItem={({ item }) => <ListItem data={item} />}>
+                renderItem={({ item }) => <ListItem data={item} deleteItem={handleDeleteItem} />}>
 
             </FlatList>
 
