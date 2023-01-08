@@ -17,10 +17,7 @@ export default function ListItem({ data, deleteItem}: OrderItemProps) {
     function handleDeleteItem(){
         deleteItem(data.id);
     }
-
-
-
-
+    
     return (
         <View style={styles.container}>
             <Text style={styles.text}>{data.name} x {data.amount}</Text>

@@ -6,6 +6,8 @@ import { Feather } from '@expo/vector-icons'
 import { api } from "../../services/api";
 import ModalPicker from "../../components/ModalPicker";
 import ListItem from "../../components/ListItem";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { StackParamsList } from "../../routes/app.routes";
 
 
 
@@ -39,7 +41,7 @@ type OrderItemProps = {
 export default function Order() {
 
     const route = useRoute<OrderRouteProps>();
-    const navigate = useNavigation();
+    const navigate = useNavigation<NativeStackNavigationProp<StackParamsList>>();
 
     const [categoryList, setCategoryLlist] = useState<CategoryProps[]>([]);
     const [categorySelected, setCategorySelected] = useState<CategoryProps | undefined>();
@@ -112,6 +114,10 @@ export default function Order() {
         setProductSelected(item);
     }
 
+    function handleFinishOrder(){
+        navigate.navigate('FinishOrder');
+    }
+
     async function handleAdd() {
         const response = await api.post('order/add-item', {
             order_id: route.params.order_id,
@@ -130,8 +136,6 @@ export default function Order() {
     }
 
     async function handleDeleteItem(item_id: string){
-
-        alert(item_id)
 
             await api.delete('order/remove-item', {
                 params:{
@@ -194,7 +198,7 @@ export default function Order() {
                 </TouchableOpacity>
 
                 <TouchableOpacity style={[styles.buttonAvancar, { opacity: orderItems.length === 0 ? 0.3 : 1 }]}
-                    disabled={orderItems.length === 0}>
+                    disabled={orderItems.length === 0} onPress={handleFinishOrder}>
 
                     <Text style={styles.textAvancar}>Avançar</Text>
                 </TouchableOpacity>
