@@ -131,6 +131,22 @@ export default function Order() {
 
     async function handleDeleteItem(item_id: string){
 
+        alert(item_id)
+
+            await api.delete('order/remove-item', {
+                params:{
+                    item_id: item_id
+                }
+            })
+      
+        // update item list
+
+        let removeItems = orderItems.filter( item => {
+            return (item.id !== item_id)
+        })
+
+        setOrderItems(removeItems);
+
     }
 
 
