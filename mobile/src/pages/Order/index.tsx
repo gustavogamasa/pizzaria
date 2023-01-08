@@ -68,7 +68,9 @@ export default function Order() {
     }
 
 
-
+    function handleChangeCategory(item:CategoryProps){
+        setCategorySelected(item);
+    }
 
 
 
@@ -120,7 +122,7 @@ export default function Order() {
                 <ModalPicker
                 handleCloseModal={()=>setModalCategoryVisible(false)}
                 optionsCategoryList={categoryList}
-                selectedItem={()=>{}}
+                selectedItem={handleChangeCategory}
             
                 />
              

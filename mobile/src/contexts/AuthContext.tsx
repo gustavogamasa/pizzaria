@@ -38,6 +38,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+     
         async function getUser() {
             //Get data saved in AsyncStorage
             const userInfo = await AsyncStorage.getItem('@pizzaAuth');
