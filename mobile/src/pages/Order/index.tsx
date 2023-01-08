@@ -115,7 +115,10 @@ export default function Order() {
     }
 
     function handleFinishOrder(){
-        navigate.navigate('FinishOrder');
+        navigate.navigate('FinishOrder',{
+            number: Number(route.params?.number),
+            order_id: route.params?.order_id
+        });
     }
 
     async function handleAdd() {

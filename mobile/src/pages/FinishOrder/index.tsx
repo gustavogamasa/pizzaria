@@ -1,18 +1,56 @@
 
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import {Feather} from '@expo/vector-icons'
+import { Feather } from '@expo/vector-icons'
+import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { api } from "../../services/api";
+import { StackParamsList } from "../../routes/app.routes";
+
+
+type RouteDetailParams = {
+    FinishOrder: {
+        number: string | number,
+        order_id: string
+    }
+}
+
+type FinishOrderRouteProps = RouteProp<RouteDetailParams, 'FinishOrder'>
 
 export default function FinishOrder() {
+
+    const route = useRoute<FinishOrderRouteProps>();
+    const navigation = useNavigation<NativeStackNavigationProp<StackParamsList>>();
+
+
+    async function handleFinishOrder() {
+
+        try {
+
+            await api.put('/order/send', {
+                order_id: route.params?.order_id
+            });
+
+            alert('Pedido enviado');
+            navigation.popToTop();
+
+        } catch (error) {
+            console.log("Erro ao finalizar" + error)
+        }
+
+    }
+
+
+
 
     return (
         <View style={styles.container}>
             <Text style={styles.alert}>Finalizar pedido?</Text>
 
-            <Text style={styles.mesaText}>Mesa 123</Text>
+            <Text style={styles.mesaText}>Mesa {route.params.number}</Text>
 
             <TouchableOpacity style={styles.button}>
-                <Text style={styles.textButton}>Finalizar</Text>
+                <Text style={styles.textButton} onPress={handleFinishOrder}>Finalizar</Text>
                 <Feather size={20} color='#1d1d2e' style={styles.icon} name='shopping-cart'></Feather>
             </TouchableOpacity>
         </View>
@@ -37,7 +75,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         marginBottom: 12
     },
-    mesaText:{
+    mesaText: {
         fontSize: 30,
         fontWeight: "bold",
         color: 'white',
@@ -51,8 +89,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 4,
-        
-    }, 
+
+    },
     icon: {
         fontWeight: "bold"
     },
