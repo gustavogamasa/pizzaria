@@ -56,8 +56,7 @@ export default function Product({ categoryList }: CategoryListProps) {
       data.append("description", productDescription);
       data.append("category_id", categories[categorySelected].id);
 
-      // const api = new setupAPIProcessStreet(productName, productPrice, productDescription);
-      // api;
+  
 
       axios
         .post(
@@ -114,8 +113,7 @@ export default function Product({ categoryList }: CategoryListProps) {
           console.error(error);
         });
 
-      // toast.success("Workflow run successfully");
-      // resetFields();
+
     } catch (error) {
       console.log(error);
       toast.error("Oops! Failed to run the workflow");
