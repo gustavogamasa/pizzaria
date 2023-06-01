@@ -32,28 +32,29 @@ router.post("/users", new CreateUserController().handle);
 
 router.post("/session", new AuthUserController().handle);
 
-router.get("/me", isAuthenticated ,new DetailUserController().handle);
+
+router.get("/me", new DetailUserController().handle);
 
 // Routes - Category
 
-router.post("/category/create", isAuthenticated, new CreateCategoryController().handle);
-router.get("/category/list-all", isAuthenticated, new ListCategoriesController().handle);
+router.post("/category/create",  new CreateCategoryController().handle);
+router.get("/category/list-all",  new ListCategoriesController().handle);
 
 // Routes - Products
 
-router.post("/product/create", isAuthenticated, upload.single('file'), new CreateProductController().handle);
-router.get("/category/products", isAuthenticated, new ListProductsByCategoryController().handle);
+router.post("/product/create",  upload.single('file'), new CreateProductController().handle);
+router.get("/category/products",  new ListProductsByCategoryController().handle);
 
 // Routes - Orders
 
-router.post("/order/create", isAuthenticated, new CreateOrderController().handle);
-router.delete("/order/delete", isAuthenticated, new RemoveOrderController().handle);
-router.post("/order/add-item", isAuthenticated, new AddItemToOrderController().handle);
-router.delete("/order/remove-item", isAuthenticated, new RemoveItemFromOrderController().handle);
-router.put("/order/send", isAuthenticated, new SendOrderController().handle);
-router.get("/order/list-pending", isAuthenticated, new ListOrdersController().handle);
-router.get("/order/detail", isAuthenticated, new DetailOrderController().handle);
-router.put("/order/finish", isAuthenticated, new FinishOrderController().handle);
+router.post("/order/create",  new CreateOrderController().handle);
+router.delete("/order/delete",  new RemoveOrderController().handle);
+router.post("/order/add-item",  new AddItemToOrderController().handle);
+router.delete("/order/remove-item",  new RemoveItemFromOrderController().handle);
+router.put("/order/send",  new SendOrderController().handle);
+router.get("/order/list-pending",  new ListOrdersController().handle);
+router.get("/order/detail",  new DetailOrderController().handle);
+router.put("/order/finish",  new FinishOrderController().handle);
 
 
 export { router };

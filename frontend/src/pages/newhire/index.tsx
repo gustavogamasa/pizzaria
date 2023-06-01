@@ -1,12 +1,13 @@
-import Head from "next/head";
 import { Header } from "../../components/Header";
 import { canSSRAuth } from "../../utils/canSSRAuth";
 import styles from "./styles.module.scss";
 import { FiUpload } from "react-icons/fi";
 import { ChangeEvent, FormEvent, useState } from "react";
-import { setupAPIClient } from "../../services/api";
+import { setupAPIClient, setupAPIProcessStreet } from "../../services/api";
 import { toast } from "react-toastify";
 import { api } from "../../services/apiClient";
+import Head from "next/head";
+import axios from "axios";
 
 type CategoryProps = {
   id: string;
@@ -18,52 +19,33 @@ interface CategoryListProps {
 }
 
 export default function Product({ categoryList }: CategoryListProps) {
-  const [imgProductURL, setImgProductURL] = useState("");
-  const [imgProduct, setImgProduct] = useState(null);
-
   const [categories, setCategories] = useState(categoryList || []);
   const [categorySelected, setCategorySelected] = useState(0);
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
+  const [workflowURL, setWorkflowURL] = useState("");
   const [productDescription, setProductDescription] = useState("");
 
   function resetFields() {
-    setImgProduct(null);
     setProductName("");
     setProductPrice("");
     setProductDescription("");
-    setImgProductURL("");
-  }
-
-  function handleFile(event: ChangeEvent<HTMLInputElement>) {
-    event.preventDefault();
-    if (!event.target.files) {
-      return;
-    }
-    const image = event.target.files[0];
-    if (!image) {
-      return;
-    }
-    if (image.type === "image/jpeg" || image.type === "image/png") {
-      setImgProduct(image);
-      setImgProductURL(URL.createObjectURL(event.target.files[0]));
-    }
   }
 
   function handleChangeCategory(e) {
     setCategorySelected(e.target.value);
   }
 
+  // run workflow in PS
   function handleRegister(e: FormEvent) {
     e.preventDefault();
     try {
       if (
         productName === "" ||
         productPrice === "" ||
-        productDescription === "" ||
-        imgProduct === null
+        productDescription === ""
       ) {
-        toast.warn("Por favor, preencha todos os campos");
+        toast.warn("Please, fill in all the details");
         return;
       }
 
@@ -72,77 +54,100 @@ export default function Product({ categoryList }: CategoryListProps) {
       data.append("name", productName);
       data.append("price", productPrice);
       data.append("description", productDescription);
-      data.append("file", imgProduct);
       data.append("category_id", categories[categorySelected].id);
 
-      const api = setupAPIClient();
-      api.post("/product/create", data);
-      toast.success("Produto cadastrado com sucesso!");
-      resetFields();
+      // const api = new setupAPIProcessStreet(productName, productPrice, productDescription);
+      // api;
+
+      axios
+        .post(
+          "https://public-api.process.st/api/v1.1/workflow-runs",
+          {
+            workflowId: "pUyVp1YAU6h8aSqd-MNP0Q",
+            name: `${productName} - Onboarding`,
+          },
+          {
+            headers: {
+              "X-API-Key": "api_gi1mqeIa2HsSGhvUtx9GgA",
+            },
+          }
+        )
+        .then((response) => {
+          setWorkflowURL(response.data.links[1].href);
+          console.log(response.data.id);
+
+          axios.post(
+            `https://public-api.process.st/api/v1.1/workflow-runs/${response.data.id}/form-fields`,
+
+            {
+              fields: [
+                {
+                  id: "idmJdk6sCpAQxg-besdBfQ",
+                  value: `${productDescription}`,
+                },
+                {
+                  id: "o9GvsX13Hz-5NQ8Rpf1IwQ",
+                  value: `${productName}`,
+                },
+                {
+                  id: "iKV86Lzeuw02Dsr0_3BJXA",
+                  value: `${productPrice}`,
+                },
+              ],
+            },
+
+            {
+              headers: {
+                "X-API-Key": "api_gi1mqeIa2HsSGhvUtx9GgA",
+              },
+            }
+          );
+
+          console.log(response.data.links[1].href);
+          toast.success(`Workflow for ${productName} has been initiated!!!`);
+        })
+
+        // THEN FIM
+
+        .catch((error) => {
+          toast.warn("Oops! Something went wrong");
+          console.error(error);
+        });
+
+      // toast.success("Workflow run successfully");
+      // resetFields();
     } catch (error) {
       console.log(error);
-      toast.error("Ops! Erro ao cadastrar");
+      toast.error("Oops! Failed to run the workflow");
     }
   }
 
-
-  /// Novo produto
+  /// New hire
 
   return (
     <>
       <Head>
-        <title>Novo produto</title>
+        <title>New hire</title>
       </Head>
       <Header />
 
       <div className={styles.container}>
         <main>
-          <h1>Cadastrar novo produto</h1>
+          <h1>New hire</h1>
 
           <form className={styles.form} onSubmit={handleRegister}>
-            <label className={styles.labelUpload}>
-              <span>
-                <FiUpload size={30} color="#FFF" />
-              </span>
-              <input
-                type="file"
-                accept="image/png, image/jpeg"
-                onChange={handleFile}
-              />
-
-              {imgProductURL && (
-                <img
-                  className={styles.previewImgProduct}
-                  src={imgProductURL}
-                  alt="Foto do produto"
-                  width={250}
-                  height={250}
-                />
-              )}
-            </label>
-
-            <select value={categorySelected} onChange={handleChangeCategory}>
-              {categories.map((item, index) => {
-                return (
-                  <option key={item.id} value={index}>
-                    {item.name}
-                  </option>
-                );
-              })}
-            </select>
-
             <input
               className={styles.input}
               type="text"
-              placeholder="Digite o nome do produto"
+              placeholder="New hire name"
               value={productName}
               onChange={(e) => setProductName(e.target.value)}
             />
 
             <input
               className={styles.input}
-              type="text"
-              placeholder="Preço R$"
+              type="email"
+              placeholder="Hiring manager email"
               value={productPrice}
               onChange={(e) => {
                 setProductPrice(e.target.value);
@@ -151,7 +156,7 @@ export default function Product({ categoryList }: CategoryListProps) {
 
             <textarea
               className={styles.input}
-              placeholder="Descrição do produto"
+              placeholder="Cover letter"
               value={productDescription}
               onChange={(e) => {
                 setProductDescription(e.target.value);
@@ -159,9 +164,20 @@ export default function Product({ categoryList }: CategoryListProps) {
             />
 
             <button type="submit" className={styles.buttonAdd}>
-              Cadastrar
+              Run workflow in Process Street
             </button>
           </form>
+          {workflowURL ? (
+            <>
+              <h2 style={{ color: "white" }}>Workflow generated!!!</h2>
+              <br></br>
+              <a className={styles.input} href={workflowURL} target="_blank">
+                Go to the workflow
+              </a>
+            </>
+          ) : (
+            <></>
+          )}
         </main>
       </div>
     </>
